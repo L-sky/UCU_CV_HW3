@@ -1,3 +1,15 @@
+# Results
+
+### Success cases: queries 1 and 2.
+In later case all 4 images immediately found. The most likely reason is that object fills the whole image, while having quite distinctive color pattern. Regarding query 1, single object fills major part of the image and has distinctive color pattern as well, however last example image for it appears to be harder to found (reason: strong change in brightness and addition of minor additional objects in frame).
+
+### Fail case: query 5.
+Background appears to dominate, in a sence that we are rather searching for consistent background with varying objects on it, then for same object laying on background with changing light conditions. 
+
+### Mixed cases: queries 3, 4.
+Major problem that we have here is non-distinctive distributions due to multitiude of objects with varying colors.
+
+
 # Queries
 
 ## 1.
