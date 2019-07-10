@@ -50,7 +50,7 @@ def PRcurve(imgs_paths, imgs_color_hists, query_color_hist, topk, query_ground_t
     for idx in tp_idx:
         tp[idx:] += 1
 
-    sample_size = np.arange(1, topk+1)       # vector containing values for each cutoff
+    sample_size = np.arange(1, topk+1)       # vector containing values for each cutoff, except 0 for which precision is not well defined 
 
     fp = false_positives(sample_size, tp)
     fn = false_negatives(gt_size, tp)
@@ -97,10 +97,12 @@ if __name__ == "__main__":
     query_PR_curves = [PRcurve(imgs_paths, imgs_color_hists, query, topk, gt) for query, gt in zip(query_color_hists, imgs_ground_truth_paths)]
 
     for i, curve in enumerate(query_PR_curves):
-        plt.plot(curve[:, 0], curve[:, 1], color='r')
+        plt.step(curve[:, 0], curve[:, 1], color='r', where='post')
         plt.title('PR-curve')
         plt.xlabel('Recall')
         plt.ylabel('Precision')
+        plt.ylim([0.0, 1.05])
+        plt.xlim([0.0, 1.0])
         plt.savefig(f'{output_img_folder}/pr_curve_query_{i+1}')
 
         # flush plot
