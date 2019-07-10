@@ -12,12 +12,10 @@ MIN_SIDE_LENGTH = 10  # how low we allow width or height to be
 
 def camShift(prob_image, window, stop_criteria):
     """Update (tracking) window using cam-shift algorithm.
-
     Args:
         prob_image: numpy array, of probabilities that given pixel belongs to tracked object
         window: == bounding box: x,y-coordinates of left-top corner, width, height; enclosing prior tracked region
         stop_criteria: dict, where 'max_iter' - maximum number of iterations to run mean shift updates, so that we do not stuck eternally, 'epsilon' - max shift value under which we assume convergence.
-
     Return:
         ret: bool, whether process converged (True), or has been stopped after maximum number of iterations (False)
         window: updated bounding box
@@ -67,12 +65,8 @@ def camShift(prob_image, window, stop_criteria):
                 cos_theta, sin_theta = sin_theta, cos_theta
 
             # calculate new width and height
-            w = np.maximum(a*cos_theta, b*sin_theta)
-            h = np.maximum(a*sin_theta, b*cos_theta)
-
-            # article comes with a recommendation to enlarge window by 20% (I assume each side), so be it
-            w = 1.2 * w
-            h = 1.2 * h
+            w = np.maximum(np.abs(a*cos_theta), np.abs(b*sin_theta))
+            h = np.maximum(np.abs(a*sin_theta), np.abs(b*cos_theta))
 
             # enforce data type
             w = np.round(w).astype(np.int64)

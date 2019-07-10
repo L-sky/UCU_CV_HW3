@@ -14,6 +14,7 @@ from camShift import camShift
 # ./imgs/BlurCar2/img ./imgs/BlurCar2/img/0001.jpg 227 207 122 99 camshift_cv2 100 1
 # ./imgs/Skating2/img ./imgs/Skating2/img/0001.jpg 347 58 103 251 camshift_own 10 1
 # ./imgs/BlurFace/img ./imgs/BlurFace/img/0001.jpg 246 226 94 114 meanshift_cv2 10 1
+# ./imgs/Board/img ./imgs/Board/img/00001.jpg 57 156 198 173 camshift_own 10 1
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("dataset", help="string path to the folder with images to apply tracking")
@@ -84,6 +85,6 @@ if __name__ == "__main__":
         x, y, w, h = track_window
         cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 2)
         cv2.imshow('track', img)
-        k = cv2.waitKey(130) & 0xff
+        k = cv2.waitKey(30) & 0xff
         if k == 27:
             break
