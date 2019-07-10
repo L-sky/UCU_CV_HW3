@@ -98,7 +98,7 @@ if __name__ == "__main__":
 
     for i, curve in enumerate(query_PR_curves):
         plt.step(curve[:, 0], curve[:, 1], color='r', where='post')
-        plt.title('PR-curve')
+        plt.title('Precision-Recall curve')
         plt.xlabel('Recall')
         plt.ylabel('Precision')
         plt.ylim([0.0, 1.05])
