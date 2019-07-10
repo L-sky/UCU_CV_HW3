@@ -20,12 +20,22 @@ def meanShift(prob_image, window, stop_criteria):
     """
     max_iter = stop_criteria['max_iter']
     epsilon = stop_criteria['epsilon']
-    x, y, w, h = window
+
+    prob_image_height, prob_image_width = prob_image.shape
 
     ret = False
     for i in range(max_iter):
+        # retrieve relevant values
+        x, y, w, h = window
+
+        # enforce correct range to avoid random errors
+        y1 = np.maximum(y, 0)
+        y2 = np.minimum(y+h, prob_image_height)
+        x1 = np.maximum(x, 0)
+        x2 = np.minimum(x+w, prob_image_width)
+
         # select region of interest
-        roi = prob_image[y:y+h, x:x+w]
+        roi = prob_image[y1:y2, x1:x2]
 
         # find center of masses in region of interest (in relative system of coordinates)
         M = cv2.moments(roi)
@@ -48,10 +58,10 @@ def meanShift(prob_image, window, stop_criteria):
         cy = M['m01'] / M['m00']
 
         # return to global system of coordinates, when respectively x or y <= 0, global and local axes coincide
-        if x > 0:
-            cx = cx + x
-        if y > 0:
-            cy = cy + y
+        if x1 > 0:
+            cx = cx + x1
+        if y1 > 0:
+            cy = cy + y1
 
         # convert float center of masses to bbox of fixed size defined by integers (need only x, y really)
         new_x = np.round(cx - 0.5*w).astype(np.int32)

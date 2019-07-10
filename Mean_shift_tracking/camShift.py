@@ -22,6 +22,8 @@ def camShift(prob_image, window, stop_criteria):
         ret: bool, whether process converged (True), or has been stopped after maximum number of iterations (False)
         window: updated bounding box
     """
+    prob_image_height, prob_image_width = prob_image.shape
+
     # run mean-shift algorithm until convergence
     ret, window = meanShift(prob_image, window, stop_criteria)
 
@@ -35,7 +37,13 @@ def camShift(prob_image, window, stop_criteria):
         w = w + 2*MARGIN
         h = h + 2*MARGIN
 
-        roi = prob_image[y:y+h, x:x+w]
+        # enforce correct range to avoid random errors
+        y1 = np.maximum(y, 0)
+        y2 = np.minimum(y + h, prob_image_height)
+        x1 = np.maximum(x, 0)
+        x2 = np.minimum(x + w, prob_image_width)
+
+        roi = prob_image[y1:y2, x1:x2]
         M = cv2.moments(roi)
 
         # if it suddenly is smaller, then we have a lot of trouble, so just keep to the output of mean-shift
@@ -46,7 +54,7 @@ def camShift(prob_image, window, stop_criteria):
             sin_theta = np.sin(theta)
 
             I_max = M['mu20'] * np.square(cos_theta) + 2*M['mu11'] * cos_theta * sin_theta + M['mu02'] * np.square(sin_theta)
-            I_min = M['mu20'] * np.square(sin_theta) + 2*M['mu11'] * cos_theta * sin_theta + M['mu02'] * np.square(cos_theta)
+            I_min = M['mu20'] * np.square(sin_theta) - 2*M['mu11'] * cos_theta * sin_theta + M['mu02'] * np.square(cos_theta)
 
             # major (a) and minor (b) axis of ellipse
             a = 4 * np.sqrt(I_max / M['m00'])
