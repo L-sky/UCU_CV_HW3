@@ -46,3 +46,7 @@ Major problem that we have here is non-distinctive distributions due to multitiu
 ### 10 closest images
 ![close5](https://github.com/L-sky/UCU_CV_HW3/blob/master/Content_based_image_retrieval/report_imgs/query5_close.png)
 ![prcurve5](https://github.com/L-sky/UCU_CV_HW3/blob/master/Content_based_image_retrieval/report_imgs/pr_curve_query_5.png)
+
+
+# Dataset
+U. Kentucky Benchmark Image Database.
