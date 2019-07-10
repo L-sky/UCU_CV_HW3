@@ -38,7 +38,9 @@ def PRcurve(imgs_paths, imgs_color_hists, query_color_hist, topk, query_ground_t
     def false_positives(sample_size, tp):
         return sample_size - tp
 
-    gt_size = len(query_ground_truth_paths)  # fixed
+    # usually we would use different cutoffs on distances, but there is really no point here,
+    # because we only have another distinctive point on Precision-Recall curve, when we take another image.
+    gt_size = len(query_ground_truth_paths)  # fixed number
     tp = np.zeros(topk)                      # vector containing values for each cutoff (number of returned images)
 
     ordered_paths = find_similar_by_color_histograms(imgs_paths, imgs_color_hists, query_color_hist, topk)
