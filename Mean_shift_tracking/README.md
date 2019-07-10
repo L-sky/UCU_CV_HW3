@@ -25,5 +25,9 @@ Images converted to hsv, and only hue channel used. In case of "template" to cal
 
 **Skating2**: all algorithms fail miserably. It seems they are more keen to stick to certain parts of background, which are barely present on "template". I think the reason here is that person rotating here a lot, and we almost immediately lose "known side" from eyesight of camera, and there is not enough correspondance between front-view, back-view and side-view for algorithms to keep the track. 
 
+**BlurCar2**: same miserable fail here. Obviously, no chance for CamShift, as coloring of car and surrounding is too close = Camshift consumes whole frame. As for MeanShift, I believe particularly strong factor here is that during first few frames car has its backlights off, and then during almost the whole video switched on (about level of oversaturating camera sensors), which means we have "holes" at these regions in "probability image" now, and given that we already have had trouble with close coloring of surrounding, it is not so sudden that it rather tracks tree. 
+
+**Girl**: MeanShift works rather good, it losses track when girl turns back (expected), but regains shortly after she face camera again. Also, due to same skin color, MeanShift struggle to distinguish between the girl and the other person. Once his face occludes hers, MeanShift losses her track and rather tracking him. CamShift performs worse, not horrible, but worse, there are not really much change of scale in video, but CamShift acts as if there are (troubles with recovering after losing/near losing track?). Funny enough, in my implementation it is nore inclined to shrinks window more than needed, and in OpenCV version - expand. 
+
 ## Clustering 
 MeanShift successfully performs clustering (granularity tuned with window parameter), for detailed results refer to the mean_shift_clustering.ipynb
